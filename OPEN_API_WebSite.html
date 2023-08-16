@@ -52,19 +52,16 @@
         }
 
         .book-container {
-            /* border-radius: 10px; */
             width: 100%;
             text-align: left;
             margin-top: 75px;
-            /* padding: 20px; */
             padding-left: 20px;
             padding-right: 20px;
             padding-bottom: 30px;
-            border: 1px solid #ccc;
+            border: 3px solid #ccc;
             box-sizing: border-box;
             overflow: hidden;
-            -webkit-box-shadow: 0px 20px 0px -10px #FFFFFF, 0px -20px 0px -10px #FFFFFF, 20px 0px 0px -10px #FFFFFF, -20px 0px 0px -10px #FFFFFF, 0px 0px 0px 10px gray, 5px 5px 5px 3px rgba(200, 194, 255, 0);
-            box-shadow: 0px 20px 0px -10px #FFFFFF, 0px -20px 0px -10px #FFFFFF, 20px 0px 0px -10px #FFFFFF, -20px 0px 0px -10px #FFFFFF, 0px 0px 0px 10px gray, 5px 5px 5px 3px rgba(200, 194, 255, 0);
+            box-shadow: 0px 30px 0px -20px #FFFFFF, 0px -30px 0px -20px #FFFFFF, 30px 0px 0px -20px #FFFFFF, -30px 0px 0px -20px #FFFFFF, 0px 0px 0px 30px gray, 5px 5px 5px 3px rgba(200, 194, 255, 0);
         }
 
         .book-container img {
@@ -92,7 +89,7 @@
         }
 
         #search_button {
-            width: 75px;
+            width: 70px;
             height: 50px;
             position: absolute;
             top: 50%;
@@ -101,9 +98,36 @@
             padding: 10px;
         }
 
-        /* 검색 결과 제목 스타일 수정 */
         .book-container h2 a {
+            /* 적절한 색상으로 변경 */
             color: #333;
+            text-decoration: none;
+            /* 전환 효과 추가 */
+            transition: color 0.3s, font-size 0.3s;
+        }
+
+        .book-container h2 a:hover {
+            /* 커서를 올렸을 때 더 진한 색상으로 변경 */
+            color: #007bff;
+            /* 커서를 올렸을 때 글꼴 크기 증가 */
+            font-size: 45px;
+            /* 커서를 올렸을 때 밑줄 추가 */
+            text-decoration: underline;
+        }
+
+        #sidebar {
+            background-color: antiquewhite;
+            margin: 150px 0px 0px 0px;
+            position: fixed;
+            width: 300px;
+            height: 600;
+            padding: 80px 20px 80px 100px;
+            box-sizing: border-box;
+        }
+        #sidebar_menu{
+            padding: 30px;
+        }
+        #sidebar a {
             text-decoration: none;
         }
     </style>
@@ -119,6 +143,14 @@
         </div>
         <input type="text" id="query" placeholder="검색하실 책 제목을 입력해주세요!">
         <img src="search.png" id="search_button" style="cursor: pointer;">
+    </div>
+    <div>
+        <ul id="sidebar">
+            내 주변 문고 찾기
+            <li id="sidebar_menu"><a href="교보문고.html" target="_blank">교보문고</a></li>
+            <li id="sidebar_menu"><a href="경인문고.html" target="_blank">경인문고</a></li>
+            <li id="sidebar_menu"><a href="영풍문고.html" target="_blank">영풍문고</a></li>
+        </ul>
     </div>
     <div id="result" style="text-align: center;"></div> <!-- 검색 결과를 표시할 영역 -->
 
@@ -202,6 +234,26 @@
                             console.log(msg);
                             appendBookInfo(msg);
                         });
+                }
+            });
+
+            $("#sidebar a").click(function (event) {
+                event.preventDefault(); // 기본 링크 클릭 동작 취소
+
+                var newWindowWidth = 900;
+                var newWindowHeight = 500;
+
+                var leftPosition = (screen.width - newWindowWidth) / 2;
+                var topPosition = (screen.height - newWindowHeight) / 2;
+
+                var newWindow = window.open(
+                    $(this).attr("href"),
+                    "_blank",
+                    "width=" + newWindowWidth + ", height=" + newWindowHeight + ", left=" + leftPosition + ", top=" + topPosition
+                );
+
+                if (newWindow) {
+                    newWindow.focus();
                 }
             });
         })

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교보문고 위치</title>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnPYD-09xUnVsb7vMu7PrLJoz-01xivpg&callback=initMap&libraries=places"
+        async defer></script>
+    <script>
+        function initMap() {
+            // 현재 위치를 얻는 함수
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var myLatLng = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // 지도 생성
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: myLatLng,
+                    zoom: 13
+                });
+
+                // 내 위치 마커 생성
+                var myLocationMarker = new google.maps.Marker({
+                    map: map,
+                    position: myLatLng,
+                    title: '내 위치'
+                });
+
+                // 마커 클릭 시 정보 표시
+                var myLocationInfoWindow = new google.maps.InfoWindow({
+                    content: '현재 위치'
+                });
+
+                myLocationInfoWindow.open(map, myLocationMarker); // 인포윈도우 초기에 열기
+
+                myLocationMarker.addListener('click', function () {
+                    myLocationInfoWindow.open(map, myLocationMarker);
+                });
+
+                // 검색 요청을 만들기 위한 서비스 객체 생성
+                var service = new google.maps.places.PlacesService(map);
+
+                // 교보문고 검색 요청
+                service.textSearch({
+                    query: '경인문고',
+                    location: myLatLng,
+                    radius: 5000 // 검색 범위 (미터)
+                }, function (results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        for (var i = 0; i < results.length; i++) {
+                            createMarker(results[i], map);
+                        }
+                    }
+                });
+            });
+        }
+
+        // 마커 생성 함수
+        function createMarker(place, map) {
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                title: place.name
+            });
+
+            // 마커 클릭 시 정보 표시
+            var infowindow = new google.maps.InfoWindow({
+                content: place.name
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+</body>
+
+</html>
