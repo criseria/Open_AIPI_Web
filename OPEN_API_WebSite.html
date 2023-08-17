@@ -9,128 +9,7 @@
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/@kfonts/nanum-handwritting-mongdol/index.css" />
     <title>책 검색 사이트</title>
-    <style>
-        #container {
-            position: relative;
-            text-align: center;
-        }
-
-        #query {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px;
-            width: 600px;
-            border: 1px solid #ccc;
-        }
-
-        #search {
-            position: absolute;
-            top: 50%;
-            left: calc(50% + 160px);
-            transform: translate(-50%, -50%);
-            padding: 10px 20px;
-            background-color: #007bff;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        #book_img {
-            width: 100%;
-            height: 300px;
-        }
-
-        #result {
-            margin-top: 320px;
-            width: 1100px;
-            margin: 0 auto;
-            font-family: "나눔손글씨 몽돌", "나눔손글씨몽돌", "nanum-handwritting-mongdol";
-            font-weight: bold;
-            font-size: 25px;
-        }
-
-        .book-container {
-            width: 100%;
-            text-align: left;
-            margin-top: 75px;
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-bottom: 30px;
-            border: 3px solid #ccc;
-            box-sizing: border-box;
-            overflow: hidden;
-            box-shadow: 0px 30px 0px -20px #FFFFFF, 0px -30px 0px -20px #FFFFFF, 30px 0px 0px -20px #FFFFFF, -30px 0px 0px -20px #FFFFFF, 0px 0px 0px 30px gray, 5px 5px 5px 3px rgba(200, 194, 255, 0);
-        }
-
-        .book-container img {
-            width: 120px;
-            height: 200px;
-            float: left;
-            margin-right: 10px;
-            margin-top: 38px;
-        }
-
-        .book-info {
-            float: left;
-            width: calc(100% - 130px);
-        }
-
-        #search_img {
-            width: 50px;
-            height: 50px;
-        }
-
-        #head {
-            font-size: 40px;
-            color: white;
-            font-weight: bold;
-        }
-
-        #search_button {
-            width: 70px;
-            height: 50px;
-            position: absolute;
-            top: 50%;
-            left: 65%;
-            transform: translate(-50%, -50%);
-            padding: 10px;
-        }
-
-        .book-container h2 a {
-            /* 적절한 색상으로 변경 */
-            color: #333;
-            text-decoration: none;
-            /* 전환 효과 추가 */
-            transition: color 0.3s, font-size 0.3s;
-        }
-
-        .book-container h2 a:hover {
-            /* 커서를 올렸을 때 더 진한 색상으로 변경 */
-            color: #007bff;
-            /* 커서를 올렸을 때 글꼴 크기 증가 */
-            font-size: 45px;
-            /* 커서를 올렸을 때 밑줄 추가 */
-            text-decoration: underline;
-        }
-
-        #sidebar {
-            background-color: antiquewhite;
-            margin: 150px 0px 0px 0px;
-            position: fixed;
-            width: 300px;
-            height: 600;
-            padding: 80px 20px 80px 100px;
-            box-sizing: border-box;
-        }
-        #sidebar_menu{
-            padding: 30px;
-        }
-        #sidebar a {
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="Open_API_Web.css">
 </head>
 
 <body>
@@ -145,18 +24,15 @@
         <img src="search.png" id="search_button" style="cursor: pointer;">
     </div>
     <div>
-        <ul id="sidebar">
-            내 주변 문고 찾기
+        <ul id="sidebar" class="sidebar_section">
+            <span>주변 서점 찾기</span>
             <li id="sidebar_menu"><a href="교보문고.html" target="_blank">교보문고</a></li>
             <li id="sidebar_menu"><a href="경인문고.html" target="_blank">경인문고</a></li>
             <li id="sidebar_menu"><a href="영풍문고.html" target="_blank">영풍문고</a></li>
         </ul>
+        <a id="MOVE_TOP_BTN" href="#"><img src="top_btn.png" alt="" id="top_btn"></a>
     </div>
     <div id="result" style="text-align: center;"></div> <!-- 검색 결과를 표시할 영역 -->
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
     <script>
         $(document).ready(function () {
@@ -222,6 +98,8 @@
             });
 
             $(window).scroll(function () {
+                // 코드 블록 내의 조건문은 페이지 아래 끝에 도달했을 때를 감지함.
+                // 이 조건은 현재 스크롤 위치와 화면의 높이를 더한 값이 문서의 전체 높이와 동일하거나 큰 경우를 의미한다.
                 if (Math.ceil($(window).scrollTop()) + $(window).height() >= $(document).height()) {
                     pageNum++;
                     $.ajax({
@@ -256,6 +134,24 @@
                     newWindow.focus();
                 }
             });
+
+            // move_top_btn 누르면 맨 위로 이동하는 이벤트 리스너
+            $(function () {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 200) {
+                        $('#MOVE_TOP_BTN').fadeIn();
+                    } else {
+                        $('#MOVE_TOP_BTN').fadeOut();
+                    }
+                });
+
+                $("#MOVE_TOP_BTN").click(function () {
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 400);
+                    return false;
+                });
+            })
         })
     </script>
 </body>
