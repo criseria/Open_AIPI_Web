@@ -36,7 +36,8 @@
                     content: '현재 위치'
                 });
 
-                myLocationInfoWindow.open(map, myLocationMarker); // 인포윈도우 초기에 열기
+                // 나의 현재 위치 마커가 페이지가 열리면 바로 띄워지도록 설정
+                myLocationInfoWindow.open(map, myLocationMarker); 
 
                 myLocationMarker.addListener('click', function () {
                     myLocationInfoWindow.open(map, myLocationMarker);
